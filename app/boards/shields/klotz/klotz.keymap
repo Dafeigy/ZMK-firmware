@@ -1,19 +1,3 @@
-
-//                                      █         ██        ▄▀▀▀▀▀▀▀▀▀▀█▀▀▀▀▀▀▀▀█▀▀▀▀▀▀▀▀▀▀█
-//                                      █        █ █      ▄▀            ▀▄      █         █
-//                                      █       █  █    ▄▀                ▀▄    █        █
-//                                      █      █   █   █                    █   █       █
-//                                      █     █    █   █                    █   █      █
-//                                      █    █     █   █                    █   █  ▀▀▀█▀▀▀▀
-//                                      █   █ █    █   █                    █   █    █
-//                                      █  █   █   █   █                    █   █   █
-//                                      █ █     █  █    ▀▄                ▄▀    █  █
-//                                      ██       █ █      ▀▄            ▄▀      █ █
-//                                      █         ██▄▄▄▄▄▄▄▄█▄▄▄▄▄▄▄▄▄▄▀        ██▄▄▄▄▄▄▄▄▄▄
-//
-// ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-       
-
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
@@ -23,13 +7,6 @@
 #define NAV  1
 #define SYM  2
 #define ADJ  3
-
-&mt {
-  quick-tap-ms = <100>;
-  global-quick-tap;
-  flavor = "tap-preferred";
-  tapping-term-ms = <170>;
-};
 
 / {
     combos {
@@ -42,18 +19,42 @@
     };
 
     macros {
-        gif: gif {
-            label = "giphy";
+        tabcw: tabcw {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings
+                = <&macro_tap &kp TAB>
+                ;
+        };
+        tabccw: tabccw {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
             bindings
                 = <&macro_press &kp LSHFT>
-                , <&macro_tap &kp N2>
+                , <&macro_tap &kp TAB>
                 , <&macro_release &kp LSHFT>
-                , <&macro_tap &kp G &kp I &kp F>
                 ;
         };
     };
+
+    behaviors {
+        encoder_alt_tab: encoder_alt_tab {
+            compatible = "zmk,behavior-sensor-rotate";
+            #sensor-binding-cells = <0>;
+            bindings = <&tabcw>, <&tabccw>;
+        };
+
+        ct: custom_tap {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            bindings = <&kp>, <&kp>;
+            tapping-term-ms = <300>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+        };
+    };
+
 
         keymap {
                 compatible = "zmk,keymap";
@@ -62,26 +63,26 @@
 
                 base_layer {
 // ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-label= "BASE"                              ;
+display-name= "BASE"                              ;
 // ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 // ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓   ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
-// ┃     Q     ┃     W     ┃     E     ┃     R     ┃     T     ┃   ┃     Y     ┃     U     ┃     I     ┃     O     ┃     P     ┃
+// ┃     Q     ┃     W     ┃     E     ┃     R     ┃     T     ┃   ┃     J     ┃     L     ┃     U     ┃     Y     ┃     ; :   ┃
 // ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫
-// ┃     A     ┃     S     ┃     D     ┃     F     ┃     G     ┃   ┃     H     ┃     J     ┃     K     ┃     L     ┃     ;     ┃
+// ┃     A     ┃     R     ┃     S     ┃     T     ┃     G     ┃   ┃     M     ┃     N     ┃     E     ┃     I     ┃     O     ┃
 // ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫
-// ┃     Z     ┃     X     ┃     C     ┃     V     ┃     B     ┃   ┃     N     ┃     M     ┃     ,     ┃     .     ┃     /     ┃
+// ┃     Z     ┃     X     ┃     C     ┃     D     ┃     V     ┃   ┃     K     ┃     H     ┃     , <   ┃     . >   ┃     / ?   ┃
 // ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
-//                                     ┃    TAB    ┃    SPC    ┃   ┃   ENTER   ┃   BSPC    ┃
+//                                     ┃   ENTER   ┃    SPC    ┃   ┃    TAB    ┃   BSPC    ┃
 //                                     ┗━━━━━━━━━━━┻━━━━━━━━━━━┛   ┗━━━━━━━━━━━┻━━━━━━━━━━━┛
  bindings = <
 // ╷           ╷           ╷           ╷           ╷           ╷   ╷           ╷           ╷           ╷           ╷           ╷
 
-    &kp Q       &kp W       &kp E       &kp R       &kp T           &kp Y       &kp U       &kp I       &kp O       &kp P
-    &mt LGUI A  &mt LALT S  &mt LCTRL D &mt LSHFT F &kp G           &kp H       &mt RSHFT J &mt RCTRL K &mt RALT L  &mt RGUI SEMI
-    &kp Z       &kp X       &kp C       &kp V       &kp B           &kp N       &kp M       &kp COMMA   &kp DOT     &kp FSLH
-                                        &kp TAB     &lt NAV SPACE   &lt SYM RET &kp BSPC    
+    &kp Q       &kp W       &kp E       &kp R       &kp T           &kp J       &ct RSHFT L &ct RCTRL U &ct RALT Y  &ct RGUI SEMI
+    &kp A       &kp S       &kp D       &kp F       &kp G           &kp M       &kp N       &kp E       &kp I       &kp O
+    &kp Z       &kp X       &kp C       &kp V       &kp B           &kp K       &kp H       &kp COMMA   &kp DOT     &kp FSLH
+                                       &ct LCTRL RET &lt NAV SPACE  &lt SYM TAB &ct RSHFT BSPC    
                         >;
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
+            sensor-bindings = <&encoder_alt_tab &inc_dec_kp C_VOL_UP C_VOL_DN>;
                 };
 
 // ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
@@ -89,26 +90,26 @@ label= "BASE"                              ;
 
                 nav_layer {
 // ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-label= "NAVI"                              ;
+display-name= "NAVI"                              ;
 // ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 // ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓   ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
-// ┃           ┃           ┃     UP    ┃           ┃     {     ┃   ┃     }     ┃     7     ┃     8     ┃     9     ┃     +     ┃
+// ┃    ESC    ┃     7     ┃     8     ┃     9     ┃     + =   ┃   ┃           ┃    W      ┃     UP    ┃     B     ┃           ┃
 // ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫
-// ┃   SHIFT   ┃   LEFT    ┃    DOWN   ┃   RIGHT   ┃     [     ┃   ┃     ]     ┃     4     ┃     5     ┃     6     ┃     -     ┃
+// ┃    TAB    ┃     4     ┃     5     ┃     6     ┃     - _   ┃   ┃           ┃   LEFT    ┃    DOWN   ┃   RIGHT   ┃           ┃
 // ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫
-// ┃           ┃   P UP    ┃  C LOCK   ┃  P DOWN   ┃     (     ┃   ┃     )     ┃     1     ┃     2     ┃     3     ┃     *     ┃
+// ┃     0     ┃     1     ┃     2     ┃     3     ┃     *     ┃   ┃           ┃  P UP     ┃   C LOCK  ┃  P DOWN   ┃           ┃
 // ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
-//                                     ┃           ┃           ┃   ┃    DEL    ┃     0     ┃  
+//                                     ┃           ┃           ┃   ┃  ADJUST   ┃   SHFT    ┃  
 //                                     ┗━━━━━━━━━━━┻━━━━━━━━━━━┛   ┗━━━━━━━━━━━┻━━━━━━━━━━━┛
  bindings = <
 // ╷           ╷           ╷           ╷           ╷           ╷   ╷           ╷           ╷           ╷           ╷           ╷
 
-    &kp ESC     &bt BT_CLR_ALL  &kp UP      &kp EQUAL   &kp LBRC        &kp RBRC    &kp KP_N7   &kp KP_N8   &kp KP_N9   &kp KP_PLUS
-    &kp LSHFT   &kp LEFT    &kp DOWN    &kp RIGHT   &kp LBKT        &kp RBKT    &kp KP_N4   &kp KP_N5   &kp KP_N6   &kp KP_MINUS
-    &kp DEL     &kp PG_UP   &kp CAPS    &kp PG_DN   &kp LPAR        &kp RPAR    &kp KP_N1   &kp KP_N2   &kp KP_N3   &kp KP_MULTIPLY
-                                        &trans      &trans          &mo ADJ     &kp KP_N0  
+    &kp ESC     &kp KP_N7   &kp KP_N8   &kp KP_N9   &kp KP_PLUS     &trans      &kp W       &kp UP      &kp B       &trans
+    &kp TAB     &kp KP_N4   &kp KP_N5   &kp KP_N6   &kp KP_MINUS    &trans      &kp LEFT &kp DOWN &kp RIGHT   &trans
+    &kp KP_N0   &kp KP_N1   &kp KP_N2   &kp KP_N3   &kp KP_MULTIPLY &trans      &kp PG_UP   &kp CAPS    &kp PG_DN   &trans
+                                        &trans      &trans          &mo ADJ     &kp LSHFT     
                         >;
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
+            sensor-bindings = <&encoder_alt_tab &inc_dec_kp C_VOL_UP C_VOL_DN>;
                 };
 
 // ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
@@ -116,26 +117,26 @@ label= "NAVI"                              ;
 
                 sim_layer {
 // ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-label= "SYM"                               ;
+display-name= "SYM"                               ;
 // ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 // ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓   ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
-// ┃     !     ┃     @     ┃     #     ┃     $     ┃     %     ┃   ┃     ˆ     ┃     &     ┃     Ü     ┃     '     ┃     "     ┃
+// ┃           ┃     &     ┃     *     ┃           ┃     {     ┃   ┃     }     ┃           ┃           ┃           ┃           ┃
 // ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫
-// ┃     Ä     ┃           ┃    SZ     ┃           ┃           ┃   ┃   MUTE    ┃   YEN     ┃   EURO    ┃  POUND    ┃     Ö     ┃
+// ┃           ┃     $     ┃     %     ┃     ^     ┃     [     ┃   ┃     ]     ┃    \ |    ┃     '     ┃    "      ┃           ┃
 // ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫
-// ┃  EMAIL1   ┃  EMAIL2   ┃           ┃           ┃           ┃   ┃   VOL-    ┃   VOL+    ┃   LAST    ┃   NEXT    ┃     \     ┃
+// ┃           ┃     !     ┃     @     ┃     #     ┃     (     ┃   ┃     )     ┃           ┃           ┃           ┃           ┃
 // ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
-//                                     ┃    GIF    ┃  ADJUST   ┃   ┃           ┃   PLAY    ┃   
+//                                     ┃           ┃  ADJUST   ┃   ┃           ┃           ┃   
 //                                     ┗━━━━━━━━━━━┻━━━━━━━━━━━┛   ┗━━━━━━━━━━━┻━━━━━━━━━━━┛
  bindings = <
 // ╷           ╷           ╷           ╷           ╷           ╷   ╷           ╷           ╷           ╷           ╷           ╷
 
-    &kp EXCL    &kp AT      &kp HASH    &kp DLLR    &kp PRCNT       &kp CARET   &kp AMPS    &kp RA(U)   &kp SQT     &kp DQT       
-    &kp RA(A)   &trans      &kp RA(S)   &trans      &trans          &kp C_MUTE  &kp LS(RA(N4)) &kp RA(N5) &kp RA(N4)   &kp RA(O) 
-    &kp RA(F18) &kp RA(F19) &trans      &trans      &trans          &kp C_VOL_DN &kp C_VOL_UP &kp C_PREV &kp C_NEXT  &kp BSLH      
-                                        &gif        &mo ADJ         &trans      &kp C_PP
+    &trans      &kp AMPS    &kp KP_MULTIPLY &trans    &kp LBRC      &kp RBRC    &trans      &trans      &trans      &trans        
+    &trans      &kp DLLR    &kp PRCNT   &kp CARET   &kp LBKT        &kp RBKT    &kp BSLH    &kp SQT     &kp DQT     &trans
+    &trans      &kp EXCL    &kp AT      &kp HASH    &kp LPAR        &kp RPAR    &trans      &trans      &trans      &trans
+                                        &trans      &mo ADJ         &trans      &trans      
                         >;
-                sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
+            sensor-bindings = <&encoder_alt_tab &inc_dec_kp C_VOL_UP C_VOL_DN>;
                 };
 
 // ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
@@ -143,26 +144,26 @@ label= "SYM"                               ;
 
                 adjust_layer {
 // ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-label= "ADJ"                               ;
+display-name= "ADJ"                               ;
 // ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 // ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓   ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
 // ┃   RESET   ┃ BT CLEAR  ┃  OUT TOG  ┃           ┃           ┃   ┃           ┃    F7     ┃    F8     ┃    F9     ┃    F12    ┃
 // ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫
 // ┃ BOOTLOAD  ┃ BT NEXT   ┃           ┃           ┃           ┃   ┃           ┃    F4     ┃    F5     ┃    F6     ┃    F11    ┃
 // ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫
-// ┃           ┃ BT PREV   ┃           ┃           ┃           ┃   ┃           ┃    F1     ┃    F2     ┃    F3     ┃    F10    ┃
+// ┃  BT 0     ┃ BT PREV   ┃           ┃           ┃           ┃   ┃           ┃    F1     ┃    F2     ┃    F3     ┃    F10    ┃
 // ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
 //                                     ┃           ┃           ┃   ┃           ┃           ┃
 //                                     ┗━━━━━━━━━━━┻━━━━━━━━━━━┛   ┗━━━━━━━━━━━┻━━━━━━━━━━━┛
  bindings = <
 // ╷           ╷           ╷           ╷           ╷           ╷   ╷           ╷           ╷           ╷           ╷           ╷
 
-    &sys_reset      &bt BT_CLR &out OUT_TOG &trans      &trans          &trans      &kp F7      &kp F8      &kp F9      &kp F12
+    &sys_reset  &bt BT_CLR &out OUT_TOG &trans      &trans          &trans      &kp F7      &kp F8      &kp F9      &kp F12
     &bootloader &bt BT_NXT  &trans      &trans      &trans          &trans      &kp F4      &kp F5      &kp F6      &kp F11  
-    &trans      &bt BT_PRV  &trans      &trans      &trans          &trans      &kp F1      &kp F2      &kp F3      &kp F10     
+   &bt BT_SEL 0 &bt BT_PRV  &trans      &trans      &trans          &trans      &kp F1      &kp F2      &kp F3      &kp F10     
                                         &trans      &trans          &trans      &trans
                         >;
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
+            sensor-bindings = <&encoder_alt_tab &inc_dec_kp C_VOL_UP C_VOL_DN>;
                 };
         };
 };

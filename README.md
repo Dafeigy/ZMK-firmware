@@ -28,6 +28,7 @@ source .venv/bin/activate
 In order to change BLE display name, you need to flash reset firmware. This firmware is built by following command:
 
 ```bash
+cd zmk
 west build -d ../build/right -p -b nice_nano_v2 -- -DSHIELD=settings_reset
 ```
 
