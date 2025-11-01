@@ -82,7 +82,7 @@ display-name= "BASE"                              ;
     &kp Z       &kp X       &kp C       &kp V       &kp B           &kp K       &kp H       &kp COMMA   &kp DOT     &kp FSLH
                                        &ct LCTRL RET &lt NAV SPACE  &lt SYM TAB &ct RSHFT BSPC    
                         >;
-            sensor-bindings = <&encoder_alt_tab &inc_dec_kp C_VOL_UP C_VOL_DN>;
+            sensor-bindings = <C_VOL_UP C_VOL_DN &encoder_alt_tab &inc_dec_kp>;
                 };
 
 // ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
