@@ -4,9 +4,9 @@ mkdir -p zmk-firmware
 cd ./app; 
 
 echo "Start processing left-hand Firmware.";
-west build -d build/left -b nice_nano_v2 -- -DSHIELD=klotz_left; 
+west build -d build/left -p -b nice_nano_v2 -- -DSHIELD=klotz_left; 
 echo "Start processing right-hand Firmware.";
-west build -d build/right -b nice_nano_v2 -- -DSHIELD=klotz_right;
+west build -d build/right -p -b nice_nano_v2 -- -DSHIELD=klotz_right;
 
 cd ../;
 mv ./app/build/left/zephyr/zmk.uf2 ./zmk-firmware/left.uf2;

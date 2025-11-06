@@ -4,6 +4,7 @@
 	chosen {
 		zmk,kscan = &kscan0;
 		zmk,matrix_transform = &default_transform;
+		zmk,backlight = &backlight;
 	};
 
 	default_transform: keymap_transform {
@@ -53,4 +54,5 @@
 		sensors = <&left_encoder &right_encoder>;
 		triggers-per-rotation = <6>;
 	};
+
 };
